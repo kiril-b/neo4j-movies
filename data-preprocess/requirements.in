@@ -1,5 +1,6 @@
-pandas
 jupyter
-tqdm
-ruff
 mypy
+pandas
+python-dotenv
+ruff
+tqdm

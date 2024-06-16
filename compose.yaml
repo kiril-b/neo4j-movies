@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  neo4j:
+    image: neo4j:5.20.0
+    restart: always
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    volumes:
+      - ${PWD}/neo4j_data:/data
+      - ${PWD}/data-preprocess/data:/import
+    environment:
+      NEO4J_AUTH: neo4j/othello-ribbon-rapid-palace-canal-3931
+      NEO4JLABS_PLUGINS: '["apoc"]'
+
