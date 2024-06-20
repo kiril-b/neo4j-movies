@@ -66,7 +66,7 @@ def main() -> None:
 
     cast_info.to_csv("./data/cast_info.csv", index=False)
     cast_movie_relationship.to_csv("./data/cast_movie_relationship.csv", index=False)
-    crew_info.to_csv("./data/crew_info_d.csv", index=False)
+    crew_info.to_csv("./data/crew_info.csv", index=False)
     crew_movie_relationship.to_csv("./data/crew_movie_relationship.csv", index=False)
     print("Done! ✅🎉")
 
