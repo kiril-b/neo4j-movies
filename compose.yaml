@@ -14,3 +14,18 @@ services:
       NEO4J_AUTH: neo4j/othello-ribbon-rapid-palace-canal-3931
       NEO4JLABS_PLUGINS: '["apoc"]'
 
+  postgres:
+    image: postgres:16.2
+    restart: unless-stopped
+    # set shared memory limit when using docker-compose
+    shm_size: 128mb
+    volumes:
+      - ${POSTGRES_VOLUME:-./pgdata}:/var/lib/postgresql/data/pgdata
+    ports:
+      - ${POSTGRES_PORT:-5439}:5432
+    environment:
+      PGDATA: /var/lib/postgresql/data/pgdata
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB_NAME: postgres
+    user: ${POSTGRES_UID:-1000}:${POSTGRES_GID:-1000}
