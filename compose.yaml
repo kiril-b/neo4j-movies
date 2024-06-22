@@ -20,12 +20,13 @@ services:
     # set shared memory limit when using docker-compose
     shm_size: 128mb
     volumes:
-      - ${POSTGRES_VOLUME:-./pgdata}:/var/lib/postgresql/data/pgdata
+      - ./pgdata:/var/lib/postgresql/data/pgdata
+      - ./postgre:/docker-entrypoint-initdb.d
     ports:
       - ${POSTGRES_PORT:-5439}:5432
     environment:
       PGDATA: /var/lib/postgresql/data/pgdata
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB_NAME: postgres
-    user: ${POSTGRES_UID:-1000}:${POSTGRES_GID:-1000}
+      POSTGRES_DB_NAME: movies
+    user: 1000:1000
