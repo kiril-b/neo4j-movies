@@ -13,6 +13,8 @@ services:
     environment:
       NEO4J_AUTH: neo4j/othello-ribbon-rapid-palace-canal-3931
       NEO4JLABS_PLUGINS: '["apoc"]'
+    depends_on:
+      - python-data-processor
 
   postgres:
     image: postgres:16.2
@@ -21,6 +23,7 @@ services:
     shm_size: 128mb
     volumes:
       - ${POSTGRES_VOLUME:-./pgdata}:/var/lib/postgresql/data/pgdata
+      - ${PWD}/data-preprocess/data:/processed_data
     ports:
       - ${POSTGRES_PORT:-5439}:5432
     environment:
@@ -28,4 +31,16 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB_NAME: postgres
-    user: ${POSTGRES_UID:-1000}:${POSTGRES_GID:-1000}
+    # user: ${POSTGRES_UID:-1000}:${POSTGRES_GID:-1000}
+    depends_on:
+      - python-data-processor
+  
+
+  python-data-processor:
+    build:
+      context: ./data-preprocess
+      dockerfile: Dockerfile
+    volumes:
+      - ${PWD}/data-preprocess/data:/processed_data
+    environment:
+      - DATA_PATH=/processed_data

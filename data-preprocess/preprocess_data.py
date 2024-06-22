@@ -28,9 +28,28 @@ def move_movie_id_in_jsons(row: pd.Series) -> pd.Series:
 
 
 def main() -> None:
+    print("Data preprocessing has started... 🤓")
     data_path = Path(os.environ.get("DATA_PATH", None))
     if not data_path.exists():
         raise ValueError(f"Invalid path to data: {str(data_path)}")
+
+    if not (data_path / "credits.csv").exists():
+        raise ValueError(
+            "Your data folder does not contain the initial files needed for preprocessing!"
+        )
+
+    # if the files are already created, just return
+    if all(
+        (data_path / f).exists()
+        for f in [
+            "cast_info.csv",
+            "cast_movie_relationship.csv",
+            "crew_info.csv",
+            "crew_movie_relationship.csv",
+        ]
+    ):
+        print("Your files are already processed! Exiting... 🙋‍♂️")
+        return
 
     df = pd.read_csv(data_path / "credits.csv")
     df = df.progress_apply(move_movie_id_in_jsons, axis=1)
@@ -64,10 +83,14 @@ def main() -> None:
         "department"
     ].str.upper()
 
-    cast_info.to_csv("./data/cast_info.csv", index=False)
-    cast_movie_relationship.to_csv("./data/cast_movie_relationship.csv", index=False)
-    crew_info.to_csv("./data/crew_info.csv", index=False)
-    crew_movie_relationship.to_csv("./data/crew_movie_relationship.csv", index=False)
+    cast_info.to_csv(data_path / "cast_info.csv", index=False)
+    cast_movie_relationship.to_csv(
+        data_path / "cast_movie_relationship.csv", index=False
+    )
+    crew_info.to_csv(data_path / "crew_info.csv", index=False)
+    crew_movie_relationship.to_csv(
+        data_path / "crew_movie_relationship.csv", index=False
+    )
     print("Done! ✅🎉")
 
 
