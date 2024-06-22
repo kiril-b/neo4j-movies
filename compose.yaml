@@ -13,6 +13,8 @@ services:
     environment:
       NEO4J_AUTH: neo4j/othello-ribbon-rapid-palace-canal-3931
       NEO4JLABS_PLUGINS: '["apoc"]'
+    depends_on:
+      - python-data-processor
 
   postgres:
     image: postgres:16.2
@@ -30,3 +32,13 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB_NAME: movies
     user: 1000:1000
+    depends_on:
+          - python-data-processor
+  python-data-processor:
+      build:
+        context: ./data-preprocess
+        dockerfile: Dockerfile
+      volumes:
+        - ${PWD}/data-preprocess/data:/processed_data
+      environment:
+        - DATA_PATH=/processed_data
