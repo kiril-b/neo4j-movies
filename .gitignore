@@ -164,3 +164,4 @@ cython_debug/
 .vscode
 neo4j_data
 data
+pgdata
