@@ -3,4 +3,7 @@ mypy
 pandas
 python-dotenv
 ruff
+msp
 tqdm
+matplotlib
+seaborn
